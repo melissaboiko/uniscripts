@@ -9,21 +9,19 @@ from os import path
 
 here = path.abspath(path.dirname(__file__))
 
-long_description = """Interface to query Unicode UCD script metadata, as per UAX #24.
-
-This module is useful for querying if a text is made of Latin characters,
-Arabic, hiragana, kanji (han), and so on.  It works for all scripts supported
-by the Unicode character database.
-
-This module is dumb and slow.  If you need speed, you probably want to
-implement your own functions.
-"""
+# adapted from https://coderwall.com/p/qawuyq/use-markdown-readme-s-in-python-modules
+try:
+       import pypandoc
+       long_description = pypandoc.convert(path.join(here, 'README.md'), 'rst', format='markdown_github')
+except (IOError, ImportError):
+    with open(path.join(here, 'README.md')) as f:
+        long_description = f.read()
 
 setup(
     name='uniscripts',
 
     # PEP440
-    version='1.0.3',
+    version='1.0.5',
 
     description='query Unicode script metadata',
     long_description=long_description,
