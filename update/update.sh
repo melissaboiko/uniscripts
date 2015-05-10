@@ -7,4 +7,4 @@ for f in Scripts.txt ScriptExtensions.txt PropertyValueAliases.txt; do
   wget -q "http://ftp.unicode.org/Public/UNIDATA/$f"
 done
 
-./make_unidata.py > ../unidata.py
+./make_unidata.py > ../uniscripts/unidata.py

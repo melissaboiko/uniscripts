@@ -23,7 +23,7 @@ setup(
     name='uniscripts',
 
     # PEP440
-    version='1.0.0',
+    version='1.0.1',
 
     description='query Unicode script metadata',
     long_description=long_description,
@@ -61,7 +61,8 @@ setup(
 
     keywords='unicode script scripts uax24 hiragana katakana kanji han',
 
-    packages=find_packages(exclude=['contrib', 'docs', 'tests*', 'update']),
+    # packages=find_packages(exclude=['contrib', 'docs', 'tests*', 'update']),
+    packages=['uniscripts'],
 
     # cf. https://packaging.python.org/en/latest/requirements.html
     install_requires=[],
