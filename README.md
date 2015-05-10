@@ -1,4 +1,11 @@
-Simple Python 3 module to access Unicode UCD script metadata (see UAX #24).
+Simple Python 3 module to query Unicode UCD script metadata (see UAX #24).
+
+This module is useful for querying if a text is made of Latin characters,
+Arabic, hiragana, kanji (han), and so on.  It works for all scripts supported
+by the Unicode character database.
+
+This module is dumb and slow.  If you need speed, you probably want to
+implement your own functions.
 
 Sample usage:
 
@@ -7,6 +14,9 @@ Sample usage:
     True
 
     >>> uniscripts.is_script('はるはあけぼの', 'Hiragana')
+    True
+
+    >>> uniscripts.is_script('中華人民共和国', 'Han') # 'Han' = kanji or hànzì
     True
 
     >>> uniscripts.which_scripts('z')

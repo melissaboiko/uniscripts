@@ -1,4 +1,4 @@
-'''Python interface to Unicode script data (UAX #24).
+'''Python interface to query Unicode UCD script data (UAX #24).
 
 Tests whether a character belongs to a script, and so on.  This module is quite
 dumb and slow.
