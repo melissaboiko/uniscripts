@@ -4,7 +4,7 @@ Tests whether a character belongs to a script, and so on.  This module is quite
 dumb and slow.
 '''
 
-from unidata import RANGES, SCRIPT_ABBREVS
+from uniscripts.unidata import RANGES, SCRIPT_ABBREVS
 
 def in_any_seq(item, seq_seq):
     """Returns: true if item is present in any sequence of the sequence of sequences.
@@ -23,7 +23,7 @@ def in_any_seq(item, seq_seq):
 
 def is_script(string, script, ignore=['Inherited', 'Common', 'Unknown']):
     """Returns: true if all chars in string belong to script.
-    
+
     Args:
         string: A string to test (may be a single char).
         script: Script long name, as in Unicode UCD's Scripts.txt (viz.).
@@ -56,8 +56,8 @@ def is_script(string, script, ignore=['Inherited', 'Common', 'Unknown']):
 
     for char  in string:
         cp = ord(char)
-        if ((not in_any_seq(cp, RANGES[script.capitalize()])) 
-            and not in_any_seq(cp, ignore_ranges)): 
+        if ((not in_any_seq(cp, RANGES[script.capitalize()]))
+            and not in_any_seq(cp, ignore_ranges)):
             return False
     return True
 
