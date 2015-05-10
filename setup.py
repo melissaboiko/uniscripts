@@ -23,7 +23,7 @@ setup(
     name='uniscripts',
 
     # PEP440
-    version='1.0.1',
+    version='1.0.2',
 
     description='query Unicode script metadata',
     long_description=long_description,

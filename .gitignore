@@ -5,3 +5,5 @@ update/ScriptExtensions.txt
 update/Scripts.txt
 dist
 *.egg-info
+build
+files.txt
