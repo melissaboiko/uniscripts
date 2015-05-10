@@ -1,4 +1,4 @@
-Simple Python 3 module to access Unicode script data (see UAX #24).
+Simple Python 3 module to access Unicode UCD script metadata (see UAX #24).
 
 Sample usage:
 
