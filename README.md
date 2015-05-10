@@ -5,7 +5,9 @@ Arabic, hiragana, kanji (han), and so on.  It works for all scripts supported
 by the Unicode character database.
 
 This module is dumb and slow.  If you need speed, you probably want to
-implement your own functions.
+implement your own functions.  See e.g. `man pcreunicode`, `man pcrepattern`
+(`grep -P` supports `\p`).  As of this writing, the next-generation of Python
+regexpes, available as the pypi library `regex`, also supports `\p`.
 
 Sample usage:
 
