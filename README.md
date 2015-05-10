@@ -13,7 +13,15 @@ Sample usage:
     >>> uniscripts.is_script('A', 'Latin')
     True
 
+    # if you pass it a string, all characters must match
     >>> uniscripts.is_script('はるはあけぼの', 'Hiragana')
+    True
+
+    >>> uniscripts.is_script('はるはAkebono', 'Hiragana')
+    False
+
+    # ...but by default, it ignores 'Common' characters, such as punctuation.
+    >>> uniscripts.is_script('はるは:あけぼの', 'Hiragana')
     True
 
     >>> uniscripts.is_script('中華人民共和国', 'Han') # 'Han' = kanji or hànzì
