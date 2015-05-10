@@ -3,4 +3,5 @@ doc
 update/PropertyValueAliases.txt
 update/ScriptExtensions.txt
 update/Scripts.txt
-
+dist
+*.egg-info
