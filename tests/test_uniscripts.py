@@ -53,6 +53,13 @@ class TestUniscripts(unittest.TestCase):
         self.assertEqual(sorted(get_scripts("안녕하세요")), ['Hangul'])
         self.assertEqual(sorted(get_scripts("שלום")), ['Hebrew'])
         self.assertEqual(sorted(get_scripts("merhaba")), ['Common', 'Latin'])
+    
+    def test_get_scripts_extended_range(self):
+        '''Test get_scripts in the 0x010000 to 0x110000 range'''
+        self.assertEqual(sorted(get_scripts("𐲌")), ['Old_Hungarian'])
+        self.assertEqual(sorted(get_scripts("𞄈𞄉𞄊𞄋")), ['Nyiakeng_Puachue_Hmong'])
+        self.assertEqual(sorted(get_scripts("𑃙ନ𑃚ୱ𑃛ପ")), ['Oriya', 'Sora_Sompeng'])
+
 
     def test_readme(self):
         '''Test the python samples found in the README.md file'''

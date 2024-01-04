@@ -4,7 +4,8 @@ Python interface to query Unicode UCD script data (UAX #24).
 Tests whether a character belongs to a script, and so on.
 '''
 
-from uniscripts.unidata import BUCKETS, SCRIPT_ABBREVS, Scripts, __unicode_version__
+from uniscripts.unidata import BUCKETS_000000_010000, BUCKETS_010000_110000
+from uniscripts.unidata import SCRIPT_ABBREVS, Scripts, __unicode_version__
 __version__ = __unicode_version__
 
 
@@ -67,10 +68,16 @@ def which_scripts(char:chr) -> [str]:
     """
 
     cp = ord(char)
-    nb_buckets = len(BUCKETS)
-    steps = 65536 // nb_buckets
-    index = cp // steps
-    bucket = BUCKETS[index]
+    if cp < 0x01_0000:
+        nb_buckets = len(BUCKETS_000000_010000)
+        steps = 0x01_0000 // nb_buckets
+        index = cp // steps
+        bucket = BUCKETS_000000_010000[index]
+    elif cp < 0x11_0000:
+        nb_buckets = len(BUCKETS_010000_110000)
+        steps = 0x10_0000 // nb_buckets
+        index = (cp - 0x01_0000) // steps
+        bucket = BUCKETS_010000_110000[index]
 
     # binary search within the bucket
     low, high = 0, len(bucket) - 1
