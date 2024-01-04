@@ -1,13 +1,17 @@
+[![Pylint](https://github.com/gaspardpetit/uniscripts/actions/workflows/pylint.yml/badge.svg)](https://github.com/gaspardpetit/uniscripts/actions/workflows/pylint.yml)
+[![Python package](https://github.com/gaspardpetit/uniscripts/actions/workflows/python-package.yml/badge.svg)](https://github.com/gaspardpetit/uniscripts/actions/workflows/python-package.yml)
+[![PyPI version](https://badge.fury.io/py/uniscripts.svg)](https://pypi.python.org/pypi/uniscripts/)
+[![Python versions](https://img.shields.io/pypi/pyversions/uniscripts.svg)](https://pypi.org/project/uniscripts/)
+[![Unicode versions](https://img.shields.io/badge/Unicode%20-15.1-blue.svg)](https://www.unicode.org/charts/)
+[![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
+
+# Uniscripts
+
 Simple Python 3 module to query Unicode UCD script metadata (see UAX #24).
 
 This module is useful for querying if a text is made of Latin characters,
 Arabic, hiragana, kanji (han), and so on.  It works for all scripts supported
 by the Unicode character database.
-
-This module is dumb and slow.  If you need speed, you probably want to
-implement your own functions.  See e.g. `man pcreunicode`, `man pcrepattern`
-(`grep -P` supports `\p`).  As of this writing, the next-generation of Python
-regexpes, available as the pypi library `regex`, also supports `\p`.
 
 Sample usage:
 
