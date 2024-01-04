@@ -15,8 +15,10 @@ by the Unicode character database.
 
 Sample usage:
 
+### Verify is a string is of a given script:
+
 ```python
->>> from uniscripts import is_script, which_scripts, Scripts
+>>> from uniscripts import is_script, Scripts
 
 >>> is_script('A', Scripts.LATIN)
 True
@@ -35,6 +37,15 @@ True
 >>> is_script('中華人民共和国', Scripts.HAN) # 'Han' = kanji or hànzì
 True
 
+```
+See docstrings for `is_script()`.
+
+
+### Detect the script of a character:
+
+```python
+>>> from uniscripts import which_scripts
+
 >>> which_scripts('z')
 ['Latin']
 
@@ -44,4 +55,36 @@ True
 >>> which_scripts('ー') # U+30FC
 ['Bopomofo', 'Common', 'Han', 'Hangul', 'Hiragana', 'Katakana', 'Yi']
 
-See docstrings for `is_script()`, `which_scripts()`.
+```
+See docstrings for `is_script()`.
+
+
+### Detect the script of a text
+
+```python
+>>> from uniscripts import get_scripts
+>>> sorted(get_scripts("こんにちは"))
+['Hiragana']
+
+>>> sorted(get_scripts("チョコレート"))
+['Bopomofo', 'Common', 'Han', 'Hangul', 'Hiragana', 'Katakana', 'Yi']
+
+>>> sorted(get_scripts("ਚਾਕਲੇਟ"))
+['Gurmukhi']
+
+>>> sorted(get_scripts("초콜릿"))
+['Hangul']
+
+>>> sorted(get_scripts("σοκολάτα"))
+['Greek']
+
+>>> sorted(get_scripts("شوكولاتة"))
+['Arabic']
+
+>>> sorted(get_scripts("chocolat"))
+['Common', 'Latin']
+
+```
+
+See docstrings for `get_scripts()`.
+
