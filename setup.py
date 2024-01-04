@@ -9,7 +9,8 @@ PACKAGE_NAME = "uniscripts"
 
 # Load version from __init__.py
 with open(f"{PACKAGE_NAME}/unidata.py", encoding="utf-8") as f:
-    version = re.search(r'^__unicode_version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
+    version = re.search(r'^__unicode_version__\s*=\s*[\'"]([^\'"]*)[\'"]',
+                        f.read(), re.MULTILINE).group(1)
 
 # Load load description from README.md
 this_directory = Path(__file__).parent
