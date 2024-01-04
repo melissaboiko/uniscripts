@@ -30,7 +30,9 @@ class TestUniscripts(unittest.TestCase):
         self.assertEqual(which_scripts('z'), ['Latin'])
         self.assertEqual(which_scripts('.'), ['Common'])
         self.assertEqual(which_scripts('は'), ['Hiragana'])
-        self.assertEqual(sorted(which_scripts('،')), ['Arabic', 'Common', 'Syriac', 'Thaana'])
+        self.assertEqual(sorted(which_scripts('،')),
+                         ['Arabic', 'Common', 'Hanifi_Rohingya', 'Nko',
+                          'Syriac', 'Thaana', 'Yezidi'])
         self.assertEqual(sorted(which_scripts('゙')), ['Hiragana', 'Inherited', 'Katakana'])
         self.assertEqual(which_scripts("\ue000"), ['Unknown'])
 
