@@ -11,31 +11,33 @@ regexpes, available as the pypi library `regex`, also supports `\p`.
 
 Sample usage:
 
-    >>> import uniscripts
-    >>> uniscripts.is_script('A', 'Latin')
-    True
+```python
+>>> import uniscripts
 
-    # if you pass it a string, all characters must match
-    >>> uniscripts.is_script('はるはあけぼの', 'Hiragana')
-    True
+>>> uniscripts.is_script('A', 'Latin')
+True
 
-    >>> uniscripts.is_script('はるはAkebono', 'Hiragana')
-    False
+# if you pass it a string, all characters must match
+>>> uniscripts.is_script('はるはあけぼの', 'Hiragana')
+True
 
-    # ...but by default, it ignores 'Common' characters, such as punctuation.
-    >>> uniscripts.is_script('はるは:あけぼの', 'Hiragana')
-    True
+>>> uniscripts.is_script('はるはAkebono', 'Hiragana')
+False
 
-    >>> uniscripts.is_script('中華人民共和国', 'Han') # 'Han' = kanji or hànzì
-    True
+# ...but by default, it ignores 'Common' characters, such as punctuation.
+>>> uniscripts.is_script('はるは:あけぼの', 'Hiragana')
+True
 
-    >>> uniscripts.which_scripts('z')
-    ['Latin']
+>>> uniscripts.is_script('中華人民共和国', 'Han') # 'Han' = kanji or hànzì
+True
 
-    >>> uniscripts.which_scripts('は')
-    ['Hiragana']
+>>> uniscripts.which_scripts('z')
+['Latin']
 
-    >>> uniscripts.which_scripts('ー') # U+30FC
-    ['Common', 'Katakana', 'Hiragana', 'Hangul', 'Han', 'Bopomofo', 'Yi']
+>>> uniscripts.which_scripts('は')
+['Hiragana']
+
+>>> uniscripts.which_scripts('ー') # U+30FC
+['Bopomofo', 'Common', 'Han', 'Hangul', 'Hiragana', 'Katakana', 'Yi']
 
 See docstrings for `is_script()`, `which_scripts()`.

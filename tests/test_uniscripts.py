@@ -4,6 +4,7 @@ Unit tests for uniscripts
 import sys
 import os
 import unittest
+import doctest
 
 # Add the parent directory to the sys.path
 
@@ -35,6 +36,11 @@ class TestUniscripts(unittest.TestCase):
                           'Syriac', 'Thaana', 'Yezidi'])
         self.assertEqual(sorted(which_scripts('゙')), ['Hiragana', 'Inherited', 'Katakana'])
         self.assertEqual(which_scripts("\ue000"), ['Unknown'])
+
+    def test_readme(self):
+        '''Test the python samples found in the README.md file'''
+        result = doctest.testfile('../README.md', optionflags=doctest.NORMALIZE_WHITESPACE)
+        self.assertFalse(result.failed, "Doctests failed on README.md")
 
 if __name__ == '__main__':
     unittest.main()

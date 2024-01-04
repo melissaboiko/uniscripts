@@ -57,9 +57,9 @@ def which_scripts(char):
     ['Common']
     >>> which_scripts('は')
     ['Hiragana']
-    >>> sorted(which_scripts('،')) # u+060c
+    >>> which_scripts('،') # u+060c
     ['Arabic', 'Common', 'Hanifi_Rohingya', 'Nko', 'Syriac', 'Thaana', 'Yezidi']
-    >>> sorted(which_scripts('゙')) # u+3099
+    >>> which_scripts('゙') # u+3099
     ['Hiragana', 'Inherited', 'Katakana']
     >>> which_scripts("\ue000")
     ['Unknown']
