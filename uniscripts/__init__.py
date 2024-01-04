@@ -4,9 +4,8 @@ Python interface to query Unicode UCD script data (UAX #24).
 Tests whether a character belongs to a script, and so on.
 '''
 
-__version__ = "1.0.5"
-
-from uniscripts.unidata import BUCKETS, SCRIPT_ABBREVS, Scripts
+from uniscripts.unidata import BUCKETS, SCRIPT_ABBREVS, Scripts, __unicode_version__
+__version__ = __unicode_version__
 
 
 # pylint: disable=dangerous-default-value

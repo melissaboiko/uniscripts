@@ -1,6 +1,8 @@
 '''Unicode lookup data generated from http://ftp.unicode.org/Public/UNIDATA'''
 
 # pylint: disable=too-many-lines, line-too-long, too-few-public-methods
+__unicode_version__ = '15.1.0'
+
 class Scripts:
     '''List of supported script names'''
     ADLAM = 'Adlam'
