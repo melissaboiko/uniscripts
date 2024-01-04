@@ -178,17 +178,31 @@ def main():
     # This allows an initial fast lookup by dividing the character value
     # by 1024 into the corresponding index, limiting the number of ranges
     # to further search
-    nb_buckets = 1024 # must be a power of 2
-    bucket_width = 65536 // 1024
-    print("BUCKETS = [")
-    for bucket_index in range(0, nb_buckets):
-        bucket_range = range(bucket_index * bucket_width, (bucket_index + 1) * bucket_width)
+    nb_buckets_low = 1024 # must be a power of 2
+    bucket_width_low = 0x010000 // nb_buckets_low
+    print("BUCKETS_000000_010000 = [")
+    for bucket_index in range(0, nb_buckets_low):
+        bucket_range = range(bucket_index * bucket_width_low, (bucket_index + 1) * bucket_width_low)
         inner_ranges = get_bucket_inner_ranges(bucket_range, script_ranges)
         print(f"    [ # {hex(bucket_range.start)} -> {hex(bucket_range.stop-1)}")
         for ir in inner_ranges:
             print(f"        [ {hex(ir[0].stop-1)}, {sorted(ir[1])}],")
         print("    ],")
     print("]")
+
+    nb_buckets_high = 32 # must be a power of 2
+    bucket_width_high = 0x100000 // nb_buckets_high
+    print("BUCKETS_010000_110000 = [")
+    for bucket_index in range(0, nb_buckets_high):
+        bucket_range = range(0x010000 + bucket_index * bucket_width_high,
+                             0x010000 + (bucket_index + 1) * bucket_width_high)
+        inner_ranges = get_bucket_inner_ranges(bucket_range, script_ranges)
+        print(f"    [ # {hex(bucket_range.start)} -> {hex(bucket_range.stop-1)}")
+        for ir in inner_ranges:
+            print(f"        [ {hex(ir[0].stop-1)}, {sorted(ir[1])}],")
+        print("    ],")
+    print("]")
+
 
 
 if __name__ == "__main__":
