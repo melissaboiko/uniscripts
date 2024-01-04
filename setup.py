@@ -1,20 +1,22 @@
-"""setuptools module for uniscripts.
+"""
+setuptools module for uniscripts.
 """
 
-# Always prefer setuptools over distutils
-from setuptools import setup, find_packages
-# To use a consistent encoding
-from codecs import open
 from os import path
+# To use a consistent encoding
+from codecs import open as codecs_open
+# Always prefer setuptools over distutils
+from setuptools import setup
 
 here = path.abspath(path.dirname(__file__))
 
 # adapted from https://coderwall.com/p/qawuyq/use-markdown-readme-s-in-python-modules
 try:
-       import pypandoc
-       long_description = pypandoc.convert(path.join(here, 'README.md'), 'rst', format='markdown_github')
+    import pypandoc
+    long_description = pypandoc.convert(
+        path.join(here, 'README.md'), 'rst', format='markdown_github')
 except (IOError, ImportError):
-    with open(path.join(here, 'README.md')) as f:
+    with codecs_open(path.join(here, 'README.md')) as f:
         long_description = f.read()
 
 setup(
