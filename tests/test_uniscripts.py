@@ -24,7 +24,7 @@ class TestUniscripts(unittest.TestCase):
         self.assertTrue(is_script('A', 'Latin'))
         self.assertTrue(is_script('Artemísia', 'Latin'))
         self.assertFalse(is_script('ἀψίνθιον ', 'Latin'))
-        self.assertTrue(is_script('Let θι = 3', 'Latin', 
+        self.assertTrue(is_script('Let θι = 3', 'Latin',
                                   ignore=['Greek', 'Common', 'Inherited', 'Unknown']))
         self.assertTrue(is_script('はるはあけぼの', 'Hiragana'))
         self.assertTrue(is_script('はるは:あけぼの.', 'Hiragana'))

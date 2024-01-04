@@ -21,6 +21,7 @@ def in_any_seq(item, seq_seq):
             return True
     return False
 
+# pylint: disable=dangerous-default-value
 def is_script(string, script, ignore=['Inherited', 'Common', 'Unknown']):
     """Returns: true if all chars in string belong to script.
 
@@ -49,7 +50,8 @@ def is_script(string, script, ignore=['Inherited', 'Common', 'Unknown']):
 
     """
 
-    if ignore == None: ignore = []
+    if ignore is None:
+        ignore = []
     ignore_ranges = []
     for ignored in ignore:
         ignore_ranges += RANGES[ignored]
@@ -84,9 +86,9 @@ def which_scripts(char):
         if in_any_seq(cp, ranges):
             scripts.append(script)
     if scripts:
-        return(scripts)
-    else:
-        return(['Unknown'])
+        return scripts
+
+    return ['Unknown']
 
 if __name__ == "__main__":
     import doctest
