@@ -12,32 +12,32 @@ regexpes, available as the pypi library `regex`, also supports `\p`.
 Sample usage:
 
 ```python
->>> import uniscripts
+>>> from uniscripts import is_script, which_scripts, Scripts
 
->>> uniscripts.is_script('A', 'Latin')
+>>> is_script('A', Scripts.LATIN)
 True
 
 # if you pass it a string, all characters must match
->>> uniscripts.is_script('はるはあけぼの', 'Hiragana')
+>>> is_script('はるはあけぼの', Scripts.HIRAGANA)
 True
 
->>> uniscripts.is_script('はるはAkebono', 'Hiragana')
+>>> is_script('はるはAkebono', Scripts.HIRAGANA)
 False
 
 # ...but by default, it ignores 'Common' characters, such as punctuation.
->>> uniscripts.is_script('はるは:あけぼの', 'Hiragana')
+>>> is_script('はるは:あけぼの', Scripts.HIRAGANA)
 True
 
->>> uniscripts.is_script('中華人民共和国', 'Han') # 'Han' = kanji or hànzì
+>>> is_script('中華人民共和国', Scripts.HAN) # 'Han' = kanji or hànzì
 True
 
->>> uniscripts.which_scripts('z')
+>>> which_scripts('z')
 ['Latin']
 
->>> uniscripts.which_scripts('は')
+>>> which_scripts('は')
 ['Hiragana']
 
->>> uniscripts.which_scripts('ー') # U+30FC
+>>> which_scripts('ー') # U+30FC
 ['Bopomofo', 'Common', 'Han', 'Hangul', 'Hiragana', 'Katakana', 'Yi']
 
 See docstrings for `is_script()`, `which_scripts()`.
