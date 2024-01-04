@@ -6,7 +6,8 @@ Tests whether a character belongs to a script, and so on.
 
 __version__ = "1.0.5"
 
-from uniscripts.unidata import BUCKETS, SCRIPT_ABBREVS
+from uniscripts.unidata import BUCKETS, SCRIPT_ABBREVS, Scripts
+
 
 # pylint: disable=dangerous-default-value
 def is_script(string, script, ignore=['Inherited', 'Common', 'Unknown']):
@@ -20,19 +21,20 @@ def is_script(string, script, ignore=['Inherited', 'Common', 'Unknown']):
             match as 'Latin', and 'あ.' will match as 'Hiragana'.  See UAX #24
             for details.
 
-    >>> is_script('A', 'Latin')
+    >>> is_script('A', Scripts.LATIN)
     True
-    >>> is_script('Artemísia', 'Latin')
+    >>> is_script('Artemísia', Scripts.LATIN)
     True
-    >>> is_script('ἀψίνθιον ', 'Latin')
+    >>> is_script('ἀψίνθιον ', Scripts.LATIN)
     False
-    >>> is_script('Let θι = 3', 'Latin', ignore=['Greek', 'Common', 'Inherited', 'Unknown'])
+    >>> ignored = [Scripts.GREEK, Scripts.COMMON, Scripts.INHERITED, Scripts.UNKNOWN]
+    >>> is_script('Let θι = 3', Scripts.LATIN, ignore=ignored)
     True
-    >>> is_script('はるはあけぼの', 'Hiragana')
+    >>> is_script('はるはあけぼの', Scripts.HIRAGANA)
     True
-    >>> is_script('はるは:あけぼの.', 'Hiragana')
+    >>> is_script('はるは:あけぼの.', Scripts.HIRAGANA)
     True
-    >>> is_script('はるは:あけぼの.', 'Hiragana', ignore=[])
+    >>> is_script('はるは:あけぼの.', Scripts.HIRAGANA, ignore=[])
     False
 
     """

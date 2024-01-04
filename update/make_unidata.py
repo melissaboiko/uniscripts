@@ -140,12 +140,20 @@ def main():
     script_ranges.setdefault('Unknown', [])
 
     print("'''Unicode lookup data generated from http://ftp.unicode.org/Public/UNIDATA'''")
-    print("# pylint: disable=too-many-lines, line-too-long")
+    print("")
+    print("# pylint: disable=too-many-lines, line-too-long, too-few-public-methods")
+
+    print("class Scripts:")
+    print("    '''List of supported script names'''")
+    for v in sorted(script_abbrevs.values()):
+        print(f"    {v.upper()} = '{v}'")
+    print("")
 
     print("SCRIPT_ABBREVS  = {")
     for k, v in script_abbrevs.items():
         print(f"    '{k}': '{v}',")
     print("}")
+    print("")
 
     # Subdivide the Unicode space in increments of 1024
     # This allows an initial fast lookup by dividing the character value
