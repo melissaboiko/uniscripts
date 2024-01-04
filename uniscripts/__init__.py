@@ -4,6 +4,8 @@ Python interface to query Unicode UCD script data (UAX #24).
 Tests whether a character belongs to a script, and so on.
 '''
 
+__version__ = "1.0.5"
+
 from uniscripts.unidata import BUCKETS, SCRIPT_ABBREVS
 
 # pylint: disable=dangerous-default-value
@@ -56,7 +58,7 @@ def which_scripts(char):
     >>> which_scripts('は')
     ['Hiragana']
     >>> sorted(which_scripts('،')) # u+060c
-    ['Arabic', 'Common', 'Syriac', 'Thaana']
+    ['Arabic', 'Common', 'Hanifi_Rohingya', 'Nko', 'Syriac', 'Thaana', 'Yezidi']
     >>> sorted(which_scripts('゙')) # u+3099
     ['Hiragana', 'Inherited', 'Katakana']
     >>> which_scripts("\ue000")
