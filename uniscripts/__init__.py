@@ -10,7 +10,7 @@ from uniscripts.unidata import BUCKETS, SCRIPT_ABBREVS, Scripts
 
 
 # pylint: disable=dangerous-default-value
-def is_script(string, script, ignore=['Inherited', 'Common', 'Unknown']):
+def is_script(string:str, script:str, ignore=['Inherited', 'Common', 'Unknown']) -> bool:
     """Returns: true if all chars in string belong to script.
 
     Args:
@@ -50,7 +50,7 @@ def is_script(string, script, ignore=['Inherited', 'Common', 'Unknown']):
                 return False
     return True
 
-def which_scripts(char):
+def which_scripts(char:chr) -> [str]:
     """Returns: list of scripts that char belongs to.
 
     >>> which_scripts('z')
@@ -85,6 +85,29 @@ def which_scripts(char):
             low = mid + 1
 
     return bucket[low][1]
+
+
+def get_scripts(text:str) -> {}:
+    """Returns: list of scripts that text belongs to.
+
+    >>> sorted(get_scripts("こんにちは"))
+    ['Hiragana']
+    >>> sorted(get_scripts("チョコレート"))
+    ['Bopomofo', 'Common', 'Han', 'Hangul', 'Hiragana', 'Katakana', 'Yi']
+    >>> sorted(get_scripts("ਚਾਕਲੇਟ"))
+    ['Gurmukhi']
+    >>> sorted(get_scripts("초콜릿"))
+    ['Hangul']
+    >>> sorted(get_scripts("σοκολάτα"))
+    ['Greek']
+    >>> sorted(get_scripts("شوكولاتة"))
+    ['Arabic']
+    >>> sorted(get_scripts("chocolat"))
+    ['Common', 'Latin']
+    
+    """
+    return {elem for x in text for elem in which_scripts(x)}
+
 
 if __name__ == "__main__":
     import doctest
