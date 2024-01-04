@@ -2,6 +2,8 @@
 '''
 Regenerates the uniscripts tables from online unicode specifications
 '''
+import re
+
 SCRIPTS_PATH='Scripts.txt'
 SCRIPT_EXTENSIONS_PATH='ScriptExtensions.txt'
 PROPERTY_VALUE_ALIASES_PATH='PropertyValueAliases.txt'
@@ -46,6 +48,19 @@ def read_script_abbrevs(property_value_aliases_path):
             script_abbrevs[fields[1]] = fields[2]
 
     return script_abbrevs
+
+def read_version(scripts_path):
+    '''load version from file'''
+    with open(scripts_path, 'r', encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+
+            if len(line) == 0 or line[0] == '#':
+                pattern = r"# Scripts-(\d+\.\d+\.\d+)\.txt"
+                match = re.match(pattern, line)
+                if match:
+                    return match.group(1)
+    return None
 
 def read_ranges(scripts_path):
     '''load ranges from file'''
@@ -134,26 +149,30 @@ def main():
 
     script_abbrevs = read_script_abbrevs(PROPERTY_VALUE_ALIASES_PATH)
     script_ranges = read_ranges(SCRIPTS_PATH)
+    unicode_version = read_version(SCRIPTS_PATH)
     read_extensions(SCRIPT_EXTENSIONS_PATH, script_abbrevs, script_ranges)
 
     # Facilitate tests later on
     script_ranges.setdefault('Unknown', [])
 
     print("'''Unicode lookup data generated from http://ftp.unicode.org/Public/UNIDATA'''")
-    print("")
+    print()
     print("# pylint: disable=too-many-lines, line-too-long, too-few-public-methods")
+
+    print(f"__unicode_version__ = '{unicode_version}'")
+    print()
 
     print("class Scripts:")
     print("    '''List of supported script names'''")
     for v in sorted(script_abbrevs.values()):
         print(f"    {v.upper()} = '{v}'")
-    print("")
+    print()
 
     print("SCRIPT_ABBREVS  = {")
     for k, v in script_abbrevs.items():
         print(f"    '{k}': '{v}',")
     print("}")
-    print("")
+    print()
 
     # Subdivide the Unicode space in increments of 1024
     # This allows an initial fast lookup by dividing the character value

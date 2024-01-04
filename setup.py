@@ -8,8 +8,8 @@ from setuptools import setup, find_packages
 PACKAGE_NAME = "uniscripts"
 
 # Load version from __init__.py
-with open(f"{PACKAGE_NAME}/__init__.py", encoding="utf-8") as f:
-    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
+with open(f"{PACKAGE_NAME}/unidata.py", encoding="utf-8") as f:
+    version = re.search(r'^__unicode_version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
 
 # Load load description from README.md
 this_directory = Path(__file__).parent
@@ -46,7 +46,7 @@ setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
 
         "Intended Audience :: Developers",
         'Topic :: Software Development :: Internationalization',
