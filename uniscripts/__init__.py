@@ -1,25 +1,10 @@
-'''Python interface to query Unicode UCD script data (UAX #24).
+'''
+Python interface to query Unicode UCD script data (UAX #24).
 
-Tests whether a character belongs to a script, and so on.  This module is quite
-dumb and slow.
+Tests whether a character belongs to a script, and so on.
 '''
 
-from uniscripts.unidata import RANGES, SCRIPT_ABBREVS
-
-def in_any_seq(item, seq_seq):
-    """Returns: true if item is present in any sequence of the sequence of sequences.
-
-    >>> in_any_seq(1, [(2,3,4),(3,2,1)])
-    True
-    >>> in_any_seq(1, [[2,3,4],[3,2,3]])
-    False
-
-    """
-
-    for seq in seq_seq:
-        if item in seq:
-            return True
-    return False
+from uniscripts.unidata import BUCKETS, SCRIPT_ABBREVS
 
 # pylint: disable=dangerous-default-value
 def is_script(string, script, ignore=['Inherited', 'Common', 'Unknown']):
@@ -52,15 +37,13 @@ def is_script(string, script, ignore=['Inherited', 'Common', 'Unknown']):
 
     if ignore is None:
         ignore = []
-    ignore_ranges = []
-    for ignored in ignore:
-        ignore_ranges += RANGES[ignored]
 
-    for char  in string:
-        cp = ord(char)
-        if ((not in_any_seq(cp, RANGES[script.capitalize()]))
-            and not in_any_seq(cp, ignore_ranges)):
-            return False
+    capitalized_script = script.capitalize()
+    for char in string:
+        char_scripts = which_scripts(char)
+        for char_script in char_scripts:
+            if char_script not in ignore and char_script not in capitalized_script:
+                return False
     return True
 
 def which_scripts(char):
@@ -81,14 +64,23 @@ def which_scripts(char):
     """
 
     cp = ord(char)
-    scripts = []
-    for script, ranges in RANGES.items():
-        if in_any_seq(cp, ranges):
-            scripts.append(script)
-    if scripts:
-        return scripts
+    nb_buckets = len(BUCKETS)
+    steps = 65536 // nb_buckets
+    index = cp // steps
+    bucket = BUCKETS[index]
 
-    return ['Unknown']
+    # binary search within the bucket
+    low, high = 0, len(bucket) - 1
+    while low < high:
+        mid = (low + high) // 2
+        current_entry = bucket[mid][0]
+
+        if cp <= current_entry:
+            high = mid
+        else:
+            low = mid + 1
+
+    return bucket[low][1]
 
 if __name__ == "__main__":
     import doctest

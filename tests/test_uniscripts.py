@@ -9,15 +9,10 @@ import unittest
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 # pylint: disable=import-error,wrong-import-position
-from uniscripts import in_any_seq, is_script, which_scripts
+from uniscripts import is_script, which_scripts
 
 class TestUniscripts(unittest.TestCase):
     '''Unit tests for uniscripts'''
-
-    def test_in_any_seq(self):
-        '''Test in_any_seq method'''
-        self.assertTrue(in_any_seq(1, [(2, 3, 4), (3, 2, 1)]))
-        self.assertFalse(in_any_seq(1, [[2, 3, 4], [3, 2, 3]]))
 
     def test_is_script(self):
         '''Test is_script method'''
