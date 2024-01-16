@@ -1,41 +1,90 @@
+[![Pylint](https://github.com/gaspardpetit/uniscripts/actions/workflows/pylint.yml/badge.svg)](https://github.com/gaspardpetit/uniscripts/actions/workflows/pylint.yml)
+[![Python package](https://github.com/gaspardpetit/uniscripts/actions/workflows/python-package.yml/badge.svg)](https://github.com/gaspardpetit/uniscripts/actions/workflows/python-package.yml)
+[![PyPI version](https://badge.fury.io/py/uniscripts.svg)](https://pypi.python.org/pypi/uniscripts/)
+[![Python versions](https://img.shields.io/pypi/pyversions/uniscripts.svg)](https://pypi.org/project/uniscripts/)
+[![Unicode versions](https://img.shields.io/badge/Unicode%20-15.1-blue.svg)](https://www.unicode.org/charts/)
+[![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
+
+# Uniscripts
+
 Simple Python 3 module to query Unicode UCD script metadata (see UAX #24).
 
 This module is useful for querying if a text is made of Latin characters,
 Arabic, hiragana, kanji (han), and so on.  It works for all scripts supported
 by the Unicode character database.
 
-This module is dumb and slow.  If you need speed, you probably want to
-implement your own functions.  See e.g. `man pcreunicode`, `man pcrepattern`
-(`grep -P` supports `\p`).  As of this writing, the next-generation of Python
-regexpes, available as the pypi library `regex`, also supports `\p`.
-
 Sample usage:
 
-    >>> import uniscripts
-    >>> uniscripts.is_script('A', 'Latin')
-    True
+### Verify is a string is of a given script:
 
-    # if you pass it a string, all characters must match
-    >>> uniscripts.is_script('はるはあけぼの', 'Hiragana')
-    True
+```python
+>>> from uniscripts import is_script, Scripts
 
-    >>> uniscripts.is_script('はるはAkebono', 'Hiragana')
-    False
+>>> is_script('A', Scripts.LATIN)
+True
 
-    # ...but by default, it ignores 'Common' characters, such as punctuation.
-    >>> uniscripts.is_script('はるは:あけぼの', 'Hiragana')
-    True
+# if you pass it a string, all characters must match
+>>> is_script('はるはあけぼの', Scripts.HIRAGANA)
+True
 
-    >>> uniscripts.is_script('中華人民共和国', 'Han') # 'Han' = kanji or hànzì
-    True
+>>> is_script('はるはAkebono', Scripts.HIRAGANA)
+False
 
-    >>> uniscripts.which_scripts('z')
-    ['Latin']
+# ...but by default, it ignores 'Common' characters, such as punctuation.
+>>> is_script('はるは:あけぼの', Scripts.HIRAGANA)
+True
 
-    >>> uniscripts.which_scripts('は')
-    ['Hiragana']
+>>> is_script('中華人民共和国', Scripts.HAN) # 'Han' = kanji or hànzì
+True
 
-    >>> uniscripts.which_scripts('ー') # U+30FC
-    ['Common', 'Katakana', 'Hiragana', 'Hangul', 'Han', 'Bopomofo', 'Yi']
+```
+See docstrings for `is_script()`.
 
-See docstrings for `is_script()`, `which_scripts()`.
+
+### Detect the script of a character:
+
+```python
+>>> from uniscripts import which_scripts
+
+>>> which_scripts('z')
+['Latin']
+
+>>> which_scripts('は')
+['Hiragana']
+
+>>> which_scripts('ー') # U+30FC
+['Bopomofo', 'Common', 'Han', 'Hangul', 'Hiragana', 'Katakana', 'Yi']
+
+```
+See docstrings for `is_script()`.
+
+
+### Detect the script of a text
+
+```python
+>>> from uniscripts import get_scripts
+>>> sorted(get_scripts("こんにちは"))
+['Hiragana']
+
+>>> sorted(get_scripts("チョコレート"))
+['Bopomofo', 'Common', 'Han', 'Hangul', 'Hiragana', 'Katakana', 'Yi']
+
+>>> sorted(get_scripts("ਚਾਕਲੇਟ"))
+['Gurmukhi']
+
+>>> sorted(get_scripts("초콜릿"))
+['Hangul']
+
+>>> sorted(get_scripts("σοκολάτα"))
+['Greek']
+
+>>> sorted(get_scripts("شوكولاتة"))
+['Arabic']
+
+>>> sorted(get_scripts("chocolat"))
+['Common', 'Latin']
+
+```
+
+See docstrings for `get_scripts()`.
+

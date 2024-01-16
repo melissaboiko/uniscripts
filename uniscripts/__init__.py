@@ -1,27 +1,16 @@
-'''Python interface to query Unicode UCD script data (UAX #24).
+'''
+Python interface to query Unicode UCD script data (UAX #24).
 
-Tests whether a character belongs to a script, and so on.  This module is quite
-dumb and slow.
+Tests whether a character belongs to a script, and so on.
 '''
 
-from uniscripts.unidata import RANGES, SCRIPT_ABBREVS
+from uniscripts.unidata import BUCKETS_000000_010000, BUCKETS_010000_110000
+from uniscripts.unidata import SCRIPT_ABBREVS, Scripts, __unicode_version__
+__version__ = __unicode_version__
 
-def in_any_seq(item, seq_seq):
-    """Returns: true if item is present in any sequence of the sequence of sequences.
 
-    >>> in_any_seq(1, [(2,3,4),(3,2,1)])
-    True
-    >>> in_any_seq(1, [[2,3,4],[3,2,3]])
-    False
-
-    """
-
-    for seq in seq_seq:
-        if item in seq:
-            return True
-    return False
-
-def is_script(string, script, ignore=['Inherited', 'Common', 'Unknown']):
+# pylint: disable=dangerous-default-value
+def is_script(string:str, script:str, ignore=['Inherited', 'Common', 'Unknown']) -> bool:
     """Returns: true if all chars in string belong to script.
 
     Args:
@@ -32,36 +21,36 @@ def is_script(string, script, ignore=['Inherited', 'Common', 'Unknown']):
             match as 'Latin', and 'あ.' will match as 'Hiragana'.  See UAX #24
             for details.
 
-    >>> is_script('A', 'Latin')
+    >>> is_script('A', Scripts.LATIN)
     True
-    >>> is_script('Artemísia', 'Latin')
+    >>> is_script('Artemísia', Scripts.LATIN)
     True
-    >>> is_script('ἀψίνθιον ', 'Latin')
+    >>> is_script('ἀψίνθιον ', Scripts.LATIN)
     False
-    >>> is_script('Let θι = 3', 'Latin', ignore=['Greek', 'Common', 'Inherited', 'Unknown'])
+    >>> ignored = [Scripts.GREEK, Scripts.COMMON, Scripts.INHERITED, Scripts.UNKNOWN]
+    >>> is_script('Let θι = 3', Scripts.LATIN, ignore=ignored)
     True
-    >>> is_script('はるはあけぼの', 'Hiragana')
+    >>> is_script('はるはあけぼの', Scripts.HIRAGANA)
     True
-    >>> is_script('はるは:あけぼの.', 'Hiragana')
+    >>> is_script('はるは:あけぼの.', Scripts.HIRAGANA)
     True
-    >>> is_script('はるは:あけぼの.', 'Hiragana', ignore=[])
+    >>> is_script('はるは:あけぼの.', Scripts.HIRAGANA, ignore=[])
     False
 
     """
 
-    if ignore == None: ignore = []
-    ignore_ranges = []
-    for ignored in ignore:
-        ignore_ranges += RANGES[ignored]
+    if ignore is None:
+        ignore = []
 
-    for char  in string:
-        cp = ord(char)
-        if ((not in_any_seq(cp, RANGES[script.capitalize()]))
-            and not in_any_seq(cp, ignore_ranges)):
-            return False
+    capitalized_script = script.capitalize()
+    for char in string:
+        char_scripts = which_scripts(char)
+        for char_script in char_scripts:
+            if char_script not in ignore and char_script not in capitalized_script:
+                return False
     return True
 
-def which_scripts(char):
+def which_scripts(char:chr) -> [str]:
     """Returns: list of scripts that char belongs to.
 
     >>> which_scripts('z')
@@ -70,23 +59,61 @@ def which_scripts(char):
     ['Common']
     >>> which_scripts('は')
     ['Hiragana']
-    >>> sorted(which_scripts('،')) # u+060c
-    ['Arabic', 'Common', 'Syriac', 'Thaana']
-    >>> sorted(which_scripts('゙')) # u+3099
+    >>> which_scripts('،') # u+060c
+    ['Arabic', 'Common', 'Hanifi_Rohingya', 'Nko', 'Syriac', 'Thaana', 'Yezidi']
+    >>> which_scripts('゙') # u+3099
     ['Hiragana', 'Inherited', 'Katakana']
     >>> which_scripts("\ue000")
     ['Unknown']
     """
 
     cp = ord(char)
-    scripts = []
-    for script, ranges in RANGES.items():
-        if in_any_seq(cp, ranges):
-            scripts.append(script)
-    if scripts:
-        return(scripts)
-    else:
-        return(['Unknown'])
+    if cp < 0x01_0000:
+        nb_buckets = len(BUCKETS_000000_010000)
+        steps = 0x01_0000 // nb_buckets
+        index = cp // steps
+        bucket = BUCKETS_000000_010000[index]
+    elif cp < 0x11_0000:
+        nb_buckets = len(BUCKETS_010000_110000)
+        steps = 0x10_0000 // nb_buckets
+        index = (cp - 0x01_0000) // steps
+        bucket = BUCKETS_010000_110000[index]
+
+    # binary search within the bucket
+    low, high = 0, len(bucket) - 1
+    while low < high:
+        mid = (low + high) // 2
+        current_entry = bucket[mid][0]
+
+        if cp <= current_entry:
+            high = mid
+        else:
+            low = mid + 1
+
+    return bucket[low][1]
+
+
+def get_scripts(text:str) -> {}:
+    """Returns: list of scripts that text belongs to.
+
+    >>> sorted(get_scripts("こんにちは"))
+    ['Hiragana']
+    >>> sorted(get_scripts("チョコレート"))
+    ['Bopomofo', 'Common', 'Han', 'Hangul', 'Hiragana', 'Katakana', 'Yi']
+    >>> sorted(get_scripts("ਚਾਕਲੇਟ"))
+    ['Gurmukhi']
+    >>> sorted(get_scripts("초콜릿"))
+    ['Hangul']
+    >>> sorted(get_scripts("σοκολάτα"))
+    ['Greek']
+    >>> sorted(get_scripts("شوكولاتة"))
+    ['Arabic']
+    >>> sorted(get_scripts("chocolat"))
+    ['Common', 'Latin']
+    
+    """
+    return {elem for x in text for elem in which_scripts(x)}
+
 
 if __name__ == "__main__":
     import doctest
